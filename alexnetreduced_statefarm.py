@@ -13,7 +13,7 @@ mnist = DataSet(folder=images_folder, new_size=input_size,
                 substract_mean=False, subsample_size=1000, test=test)
 
 lr = 1e-4
-batch_size = 2
+batch_size = 64
 
 
 def weight_variable(shape):
@@ -121,12 +121,15 @@ wc4_hist = tf.histogram_summary("weights conv 4", W_conv4)
 wc5_hist = tf.histogram_summary("weights conv 5", W_conv5)
 wd1_hist = tf.histogram_summary("weights dense 1", W_fc6)
 wd2_hist = tf.histogram_summary("weights dense 2", W_fc7)
-out_hist = tf.histogram_summary("weights output", W_fc8)
+wout_hist = tf.histogram_summary("weights output", W_fc8)
 bc1_hist = tf.histogram_summary("biases conv 1", b_conv1)
 bc2_hist = tf.histogram_summary("biases conv 2", b_conv2)
 bc3_hist = tf.histogram_summary("biases conv 3", b_conv3)
 bc4_hist = tf.histogram_summary("biases conv 4", b_conv4)
 bc5_hist = tf.histogram_summary("biases conv 5", b_conv5)
+bd1_hist = tf.histogram_summary("biases dense 1", b_fc6)
+bd2_hist = tf.histogram_summary("biases dense 2", b_fc7)
+bout_hist = tf.histogram_summary("biases output", b_fc8)
 y_hist = tf.histogram_summary("predictions", y)
 ce_summ = tf.scalar_summary("cost", cross_entropy)
 accuracy_summary = tf.scalar_summary("accuracy", accuracy)
@@ -134,7 +137,7 @@ merged = tf.merge_all_summaries()
 
 with tf.Session() as sess:
     sess.run(tf.initialize_all_variables())
-    writer = tf.train.SummaryWriter("/tmp/alexnet_logs", sess.graph)
+    writer = tf.train.SummaryWriter("/tmp/alexnetreduced_logs", sess.graph)
     for i in range(15000+1):
         batch = mnist.next_batch(batch_size)
         if i % 100 == 0:
@@ -144,10 +147,10 @@ with tf.Session() as sess:
             summary_str = result[0]
             acc = result[1]
             writer.add_summary(summary_str, i)
-        if i % 1000 == 0:
-            batch = mnist.next_test_batch(batch_size)
-            print('TEST error:', 1-accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),
-                  '(Crossentropy:', cross_entropy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}), ')')
+        #if i % 1000 == 0:
+        #    batch = mnist.next_test_batch(batch_size)
+        #    print('TEST error:', 1-accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),
+        #          '(Crossentropy:', cross_entropy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}), ')')
         train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 
     print 'Making predictions on test set...'

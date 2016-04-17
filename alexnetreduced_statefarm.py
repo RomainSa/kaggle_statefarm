@@ -112,7 +112,6 @@ cross_entropy = -tf.reduce_mean(y_ * tf.log(y + 1e-9))
 train_step = tf.train.AdamOptimizer(lr).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
-sess.run(tf.initialize_all_variables())
 
 # add summary variables
 wc1_hist = tf.histogram_summary("weights conv 1", W_conv1)

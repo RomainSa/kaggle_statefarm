@@ -97,7 +97,7 @@ with tf.Session() as sess:
         if i % 100 == 0:
             print('[Step', str(i) + '] TRAIN error:', 1-accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),
                   '(Crossentropy:', cross_entropy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),')')
-            result = sess.run([merged, accuracy], feed_dict={x: batch[0], y: batch[1], keep_prob: 1.})
+            result = sess.run([merged, accuracy], feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.})
             summary_str = result[0]
             acc = result[1]
             writer.add_summary(summary_str, i)

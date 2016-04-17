@@ -90,7 +90,7 @@ merged = tf.merge_all_summaries()
 
 with tf.Session() as sess:
     sess.run(tf.initialize_all_variables())
-    writer = tf.train.SummaryWriter("/tmp/alexnet_logs", sess.graph)
+    writer = tf.train.SummaryWriter("/tmp/mnist_logs", sess.graph)
     for i in range(15000+1):
         batch = mnist.next_batch(50)
         if i % 100 == 0:

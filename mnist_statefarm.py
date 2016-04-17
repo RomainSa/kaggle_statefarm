@@ -13,6 +13,7 @@ mnist = DataSet(folder=images_folder, new_size=input_size,
                 substract_mean=False, subsample_size=None, test=test)
 
 lr = 1e-4
+keep_prob = 0.5
 
 
 def weight_variable(shape):
@@ -104,7 +105,7 @@ with tf.Session() as sess:
             batch = mnist.next_test_batch(100)
             print('TEST error:', 1-accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),
                   '(Crossentropy:', cross_entropy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),')')
-        train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+        train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: keep_prob_})
 
     print 'Making predictions on test set...'
     predictions_ = np.empty((0, 10))

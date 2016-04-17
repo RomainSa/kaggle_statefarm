@@ -123,7 +123,7 @@ class DataSet:
             start = 0
             self.test_index_in_epoch = batch_size
             assert batch_size <= self.test_num_examples
-        end = self.index_in_epoch
+        end = self.test_index_in_epoch
         # load images
         if self.substract_mean:
             return (self.test_images[self.test_indexes[start:end]] - self.images_mean) / 255. - 0.5,\

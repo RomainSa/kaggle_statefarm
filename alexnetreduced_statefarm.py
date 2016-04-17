@@ -12,9 +12,10 @@ test.image = test.image.apply(lambda x: images_folder + '/test/' + x)
 mnist = DataSet(folder=images_folder, new_size=input_size,
                 substract_mean=False, subsample_size=None, test=test)
 
+# Parameters
 lr = 1e-4
 batch_size = 64
-keep_prob_ = 0.5
+keep_prob_ = 0.5   # for dropout regularization
 
 
 def weight_variable(shape):
@@ -41,7 +42,9 @@ def norm(l_input, lsize=4):
 
 x = tf.placeholder("float", shape=[None, input_size[0], input_size[1], input_size[2]])   # 784 pixels = 28 * 28 image
 y_ = tf.placeholder("float", shape=[None, 10])
+keep_prob = tf.placeholder("float")
 
+# Size of each layer
 c1 = 16
 c2 = 32
 c3 = 64
@@ -49,8 +52,6 @@ c4 = 64
 c5 = 32
 f6 = 512
 f7 = 512
-
-keep_prob = tf.placeholder("float")
 
 # Weights
 W_conv1 = weight_variable([11, 11, input_size[2], c1])   # [patch_size1, patch_size2, input_channels, output_channels]
@@ -109,6 +110,7 @@ dropout7 = tf.nn.dropout(relu7, keep_prob)
 
 y = tf.nn.softmax(tf.matmul(dropout7, W_fc8) + b_fc8)
 
+# Loss
 cross_entropy = -tf.reduce_mean(y_ * tf.log(y + 1e-9))
 train_step = tf.train.AdamOptimizer(lr).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))

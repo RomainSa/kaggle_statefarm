@@ -67,7 +67,7 @@ b_conv4 = bias_variable([c4])
 W_conv5 = weight_variable([3, 3, c4, c5])   # [patch_size1, patch_size2, input_channels, output_channels]
 b_conv5 = bias_variable([c5])
 
-W_fc6 = weight_variable([3136, f6])   # output size: 10
+W_fc6 = weight_variable([1568, f6])   # output size: 10
 b_fc6 = bias_variable([f6])
 
 W_fc7 = weight_variable([f6, f7])   # output size: 10

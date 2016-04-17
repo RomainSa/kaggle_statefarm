@@ -92,7 +92,6 @@ with tf.Session() as sess:
     sess.run(tf.initialize_all_variables())
     writer = tf.train.SummaryWriter("/tmp/alexnet_logs", sess.graph)
     for i in range(15000+1):
-        writer = tf.train.SummaryWriter("/tmp/alexnet_logs", sess.graph)
         batch = mnist.next_batch(50)
         if i % 100 == 0:
             print('[Step', str(i) + '] TRAIN error:', 1-accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),

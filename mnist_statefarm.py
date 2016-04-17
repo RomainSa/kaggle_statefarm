@@ -13,7 +13,7 @@ mnist = DataSet(folder=images_folder, new_size=input_size,
                 substract_mean=False, subsample_size=None, test=test)
 
 lr = 1e-4
-keep_prob = 0.5
+keep_prob_ = 0.5
 lambda_ = 1e-4
 
 
@@ -108,7 +108,7 @@ with tf.Session() as sess:
             acc = result[1]
             writer.add_summary(summary_str, i)
         if i % 1000 == 0:
-            batch = mnist.next_test_batch(100)
+            batch = mnist.next_test_batch(600)
             print('TEST error:', 1-accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),
                   '(Crossentropy:', cross_entropy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),')')
         train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: keep_prob_})

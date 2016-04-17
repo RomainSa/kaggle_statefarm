@@ -10,10 +10,11 @@ images_folder = '/home/ubuntu/data/kaggle_statefarm'
 test = pd.read_csv('test_labels.csv', names=['image', 'label'])
 test.image = test.image.apply(lambda x: images_folder + '/test/' + x)
 mnist = DataSet(folder=images_folder, new_size=input_size,
-                substract_mean=False, subsample_size=1000, test=test)
+                substract_mean=False, subsample_size=None, test=test)
 
 lr = 1e-4
 batch_size = 64
+keep_prob_ = 0.5
 
 
 def weight_variable(shape):
@@ -151,7 +152,7 @@ with tf.Session() as sess:
         #    batch = mnist.next_test_batch(batch_size)
         #    print('TEST error:', 1-accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),
         #          '(Crossentropy:', cross_entropy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}), ')')
-        train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+        train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: keep_prob_})
 
     print 'Making predictions on test set...'
     predictions_ = np.empty((0, 10))

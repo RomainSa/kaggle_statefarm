@@ -106,16 +106,16 @@ with tf.Session() as sess:
                   '(Crossentropy:', cross_entropy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),')')
         train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 
-print 'Making predictions on test set...'
-predictions_ = np.empty((0, 10))
-j = 0
-while predictions_.shape[0] < len(mnist.prediction_files):
-    j += 1
-    print j
-    predictions_ = np.concatenate((predictions_, y.eval(feed_dict={x: mnist.next_prediction_batch(500), keep_prob: 1.0})))
+    print 'Making predictions on test set...'
+    predictions_ = np.empty((0, 10))
+    j = 0
+    while predictions_.shape[0] < len(mnist.prediction_files):
+        j += 1
+        print j
+        predictions_ = np.concatenate((predictions_, y.eval(feed_dict={x: mnist.next_prediction_batch(500), keep_prob: 1.0})))
 
-print 'Saving predictions to csv...'
-with open('submission_' + str(np.random.rand())[2:] + '.csv', 'w+') as f:
-    f.write('img,c0,c1,c2,c3,c4,c5,c6,c7,c8,c9\n')
-    for i, p in enumerate(predictions_):
-        f.write(mnist.prediction_files[i].split('/')[-1] + ',' + ','.join([str(x) for x in p]) + '\n')
+    print 'Saving predictions to csv...'
+    with open('submission_' + str(np.random.rand())[2:] + '.csv', 'w+') as f:
+        f.write('img,c0,c1,c2,c3,c4,c5,c6,c7,c8,c9\n')
+        for i, p in enumerate(predictions_):
+            f.write(mnist.prediction_files[i].split('/')[-1] + ',' + ','.join([str(x) for x in p]) + '\n')

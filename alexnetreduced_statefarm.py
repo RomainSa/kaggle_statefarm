@@ -96,7 +96,7 @@ relu4 = tf.nn.relu(conv4 + b_conv4)
 conv5 = conv2d(relu4, W_conv5)
 relu5 = tf.nn.relu(conv5 + b_conv5)
 pool5 = max_pool(relu5, k=3, s=2)
-pool5_flat = tf.reshape(pool5, [-1, 3136])
+pool5_flat = tf.reshape(pool5, [-1, 1568])
 
 fc6 = tf.matmul(pool5_flat, W_fc6)
 relu6 = tf.nn.relu(fc6 + b_fc6)

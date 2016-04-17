@@ -148,10 +148,10 @@ with tf.Session() as sess:
             summary_str = result[0]
             acc = result[1]
             writer.add_summary(summary_str, i)
-        #if i % 1000 == 0:
-        #    batch = mnist.next_test_batch(batch_size)
-        #    print('TEST error:', 1-accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),
-        #          '(Crossentropy:', cross_entropy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}), ')')
+        if i % 1000 == 0:
+            batch = mnist.next_test_batch(batch_size)
+            print('TEST error:', 1-accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),
+                  '(Crossentropy:', cross_entropy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}), ')')
         train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: keep_prob_})
 
     print 'Making predictions on test set...'

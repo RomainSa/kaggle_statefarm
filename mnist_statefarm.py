@@ -14,6 +14,7 @@ mnist = DataSet(folder=images_folder, new_size=input_size,
 
 lr = 1e-4
 keep_prob = 0.5
+lambda_ = 1e-4
 
 
 def weight_variable(shape):
@@ -70,7 +71,12 @@ h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
 
 y = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
 
+# L2 regularization for the fully connected parameters.
+regularizers = (tf.nn.l2_loss(W_fc1) + tf.nn.l2_loss(b_fc1) +
+              tf.nn.l2_loss(W_fc2) + tf.nn.l2_loss(b_fc1))
+
 cross_entropy = -tf.reduce_mean(y_ * tf.log(y + 1e-9))
+cross_entropy += lambda_ * regularizers   # Add the regularization term to the loss.
 train_step = tf.train.AdamOptimizer(lr).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))

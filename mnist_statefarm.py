@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from input_data import DataSet
+from sklearn.metrics import confusion_matrix
 import tensorflow as tf
 
 input_size = (28, 28, 1)
@@ -12,9 +13,9 @@ test.image = test.image.apply(lambda x: images_folder + '/test/' + x)
 mnist = DataSet(folder=images_folder, new_size=input_size,
                 substract_mean=False, subsample_size=None, test=test)
 
-lr = 1e-4
+lr = 1e-3
 keep_prob_ = 0.5
-lambda_ = 1e-4
+lambda_ = 0.
 
 
 def weight_variable(shape):
@@ -112,6 +113,14 @@ with tf.Session() as sess:
             print('TEST error:', 1-accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),
                   '(Crossentropy:', cross_entropy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),')')
         train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: keep_prob_})
+
+    # plotting confusion matrix
+    batch = mnist.next_test_batch(600)
+    test_predictions = y.eval(feed_dict={x: batch[0], keep_prob: 1.0})
+    test_predictions = tf.argmax(test_predictions, 1).eval()
+    truth = tf.argmax(batch[1], 1).eval()
+    cm = confusion_matrix(truth, test_predictions)
+    print(cm)
 
     print 'Making predictions on test set...'
     predictions_ = np.empty((0, 10))

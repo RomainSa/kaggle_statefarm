@@ -54,7 +54,7 @@ b_conv2 = bias_variable([n2])
 W_conv3 = weight_variable([3, 3, n2, n3])   # [patch_size1, patch_size2, p_channels, output_channels]
 b_conv3 = bias_variable([n3])
 
-W_fc1 = weight_variable([7744/16, n4])
+W_fc1 = weight_variable([input_size[0] / 4 * input_size[1] / 4 * n3, n4])
 b_fc1 = bias_variable([n4])
 
 W_fc2 = weight_variable([n4, 10])   # output size: 10
@@ -71,7 +71,7 @@ h_pool2_drop = tf.nn.dropout(h_pool2, keep_prob)
 h_conv3 = tf.nn.relu(conv2d(h_pool2_drop, W_conv3, s=1) + b_conv3)
 h_pool3_drop = tf.nn.dropout(h_conv3, keep_prob)
 
-h_pool3_flat = tf.reshape(h_pool3_drop, [-1, 7744/16])
+h_pool3_flat = tf.reshape(h_pool3_drop, [-1, input_size[0] / 4 * input_size[1] / 4 * n3])
 h_fc1 = tf.nn.relu(tf.matmul(h_pool3_flat, W_fc1) + b_fc1)
 h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
 

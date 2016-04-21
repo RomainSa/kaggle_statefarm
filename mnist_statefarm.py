@@ -133,6 +133,8 @@ with tf.Session() as sess:
         j += 1
         print j
         predictions_ = np.concatenate((predictions_, y.eval(feed_dict={x: mnist.next_prediction_batch(500), keep_prob: 1.0})))
+    np.save('mnist_predictions.npy', predictions_)
+    np.save('mnist_predictions_names.npy', mnist.prediction_files)
 
     print 'Saving predictions to csv...'
     with open('submission_' + str(np.random.rand())[2:] + '.csv', 'w+') as f:

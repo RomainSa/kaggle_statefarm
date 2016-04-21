@@ -81,6 +81,7 @@ cross_entropy += lambda_ * regularizers   # Add the regularization term to the l
 train_step = tf.train.AdamOptimizer(lr).minimize(cross_entropy)
 correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
+saver = tf.train.Saver()
 
 # add summary variables
 wc1_hist = tf.histogram_summary("weights conv 1", W_conv1)
@@ -113,6 +114,9 @@ with tf.Session() as sess:
             print('TEST error:', 1-accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),
                   '(Crossentropy:', cross_entropy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0}),')')
         train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: keep_prob_})
+
+    # save the model
+    save_path = saver.save(sess, "/tmp/mnist_statefarm.ckpt")
 
     # plotting confusion matrix
     batch = mnist.next_test_batch(600)
